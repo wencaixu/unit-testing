@@ -45,6 +45,7 @@ public class LargestTest extends TestCase {
             Largest.largest(new int[]{});
             fail();
         } catch (Exception ex){
+            // 此处设置assertTrue为true,防止抛出异常
             assertTrue(true);
         }
     }
