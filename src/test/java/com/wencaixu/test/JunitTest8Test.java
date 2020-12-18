@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class JunitTest8Test extends TestCase {
 
@@ -72,14 +74,43 @@ public class JunitTest8Test extends TestCase {
          // 3、Range 区间性 - 值是否位于合理的最小值和最大值之间
          // 4、Reference 依赖性 - 代码是否引用了一些不在代码本身空值范围之内的外部资源
          // 5、Existence 存在性 - 值是否存在，例如是否非null，非0，再一个集合中等等
-         // 6、 Cardinatity 基数性-是否好友足够的值
-         // 7、 Time 相对或绝对的时间性 - 所有的事情发生是否是有序的，是否子啊正确的时刻，是否恰好及时
+         // 6、Cardinatity 基数性-是否有足够的值，也被称为集合的势，指集合中的元素的个数
+         // 7、Time 相对或绝对的时间性 - 所有的事情发生是否是有序的，是否子啊正确的时刻，是否恰好及时
 
+    // 关于一致性的要求： 如果是数据结构验证，必须要考虑到所有不合法的情况
+
+    // 测试一致性
     public void testB(){
+        // wencai.xu@163.com或wencai.xu@gmail.com
+        // 不合法的情况： 1、不包括@
+        //             2、@前面必须是wencai.xu这种格式
+        //             3、@后是163.com后缀
+        //             4、@后com前不是逗号
+        Pattern pattern = Pattern.compile("^[a-z]+\\.[a-z]{1,3}@(163|gmail)+\\.com$");
+        assertTrue("与要求的格式不匹配",pattern.matcher("wencai.xu@163.com").find());
+        assertFalse("不包括@",pattern.matcher("wencai.xu163.com").find());
+        assertFalse("@前不包括.",pattern.matcher("wencaixu@163.com").find());
+        assertFalse("@后不是163|gmail.com", pattern.matcher("wencai.xu@gmailaa.com").find());
+        assertFalse("@后com前不是逗号",pattern.matcher("wencai.xu@gmailaa,sscom").find());
+    }
 
+    // 测试顺序性
+    public void testOrder(){
+        Integer[] bubble = new Integer[]{3,2,1,5,6};
+        new BubbleSort<Integer>().bubbleSort(bubble);
+        int[] result = new int[]{1,2,3,5,6};
+        for(int i = 0; i < bubble.length; i++){
+            assertEquals("不相同", Integer.valueOf(result[i]),bubble[i]);
+        }
     }
 
     // 检查反向检查
+
+    // 关于索引测试
+    //    1. 开始索引和结束索引有相同值
+    //    2. 第一个索引大于最后一个索引
+    //    3. 索引为负值
+    //    4. Count不能匹配确切的索引个数
     public void testI(){
 
     }
